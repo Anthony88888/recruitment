@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: celery
+  name: celery
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: celery
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: celery
+    spec:
+      containers:
+        - command:
+            - /bin/sh
+            - /data/recruitment/worker.start.sh
+          image: 172.18.128.1/ihopeit/recruitment:0.8
+          imagePullPolicy: IfNotPresent
+          name: recruit-celery
+          resources: {}
+      restartPolicy: Always
+status: {}

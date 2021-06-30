@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: celery-flower
+  name: celery-flower
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: celery-flower
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: celery-flower
+    spec:
+      containers:
+        - command:
+            - /bin/sh
+            - /data/recruitment/flower.start.sh
+          image: 172.18.128.1/ihopeit/recruitment:0.8
+          imagePullPolicy: IfNotPresent
+          name: recruit-flower
+          ports:
+            - containerPort: 5555
+          resources: {}
+      restartPolicy: Always
+status: {}

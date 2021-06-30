@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="2c293fe9-42e7-48c3-a3fd-2f73a3763018" name="recruitment">
+        <fileTransfer accessType="SFTP" host="172.18.128.0" port="22" sshConfigId="e5a96c40-be71-4f02-80bf-fea9aed1c3d9" sshConfig="ironfort">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

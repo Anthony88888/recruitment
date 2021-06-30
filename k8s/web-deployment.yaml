@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: web
+  name: web
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+     io.kompose.service: web
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: web
+    spec:
+      containers:
+      - command:
+        - /bin/sh
+        - /data/recruitment/start.production.bat
+        env:
+        - name: server_params
+          value: --settings=settings.production
+        ### variables from kubernetes secret
+        - name: DINGTALK_WEB_HOOK_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: recruitment-secrets
+              key: DINGTALK_WEB_HOOK_TOKEN
+        - name: DJANGO_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: recruitment-secrets
+              key: DJANGO_SECRET_KEY
+        - name: LDAP_AUTH_URL
+          valueFrom:
+            secretKeyRef:
+              name: recruitment-secrets
+              key: LDAP_AUTH_URL
+        - name: LDAP_AUTH_CONNECTION_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: recruitment-secrets
+              key: LDAP_AUTH_CONNECTION_USERNAME
+        - name: LDAP_AUTH_CONNECTION_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: recruitment-secrets
+              key: LDAP_AUTH_CONNECTION_PASSWORD
+#        - name: OSS_ACCESS_KEY_ID
+#          valueFrom:
+#            secretKeyRef:
+#              name: recruitment-secrets
+#              key: OSS_ACCESS_KEY_ID
+#        - name: OSS_ACCESS_KEY_SECRET
+#          valueFrom:
+#            secretKeyRef:
+#              name: recruitment-secrets
+#              key: OSS_ACCESS_KEY_SECRET
+        ######### environment variables for logtail to SLS ###########
+#        - name: aliyun_logs_recruitment-web
+#          value: stdout
+#        - name: aliyun_logs_recruitment-web
+#          value: /data/logs/recruitment/*.log
+#        - name: aliyun_logs_mytag1_tags
+#          value: tag1=v1
+        image: 172.18.18.20/ihopeit/django-recruitment:0.8
+        imagePullPolicy: Always
+        #imagePullPolicy: IfNotPresent
+        name: recruitment-web
+        ports:
+        - containerPort: 8000
+          #type: Directory
+        resources: {}
+        volumeMounts:
+        - mountPath: /data/recruitment/static
+          name: django-static
+        - mountPath: /data/recruitment/media
+          name: django-media
+          #- mountPath: /data/recruitment/static
+          #name: django-static
+      restartPolicy: Always
+      volumes:
+      - name: django-static
+        persistentVolumeClaim:
+          claimName: django-static
+      - name: django-media
+        persistentVolumeClaim:
+          claimName: django-media
+status: {}

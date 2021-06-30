@@ -1,0 +1,1 @@
+export DJANGO_SETTINGS_MODULE=settings.production && uvicorn recruitment.asgi:application --port 8001 --workers 2

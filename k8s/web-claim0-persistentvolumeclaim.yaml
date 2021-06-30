@@ -1,0 +1,16 @@
+# 此配置根据实际需求是否需要开启pv和pvc的方式保存应用日志
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  creationTimestamp: null
+#  labels:
+#    io.kompose.service: web-claim0
+#  name: web-claim0
+#spec:
+#  storageClassName: alicloud-disk-efficiency
+#  accessModes:
+#    - ReadWriteOnce
+#  resources:
+#    requests:
+#      storage: 20Gi
+#status: {}
